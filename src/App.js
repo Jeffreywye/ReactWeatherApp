@@ -31,14 +31,30 @@ class App extends React.Component {
     // template strings
     const api_call = await fetch(query);
     const data = await api_call.json();
-    console.log(data);
-    this.setState({
-      temperature: data.main.temp,
-      city: data.name,
-      country: data.sys.country,
-      humidity: data.main.humidity,
-      description: data.weather[0].description
-    });
+    const code = data.cod;
+    const flooredCode = Math.floor(code/100);
+
+    if (city && country && flooredCode === 2){
+      console.log(data);
+      this.setState({
+        temperature: data.main.temp,
+        city: data.name,
+        country: data.sys.country,
+        humidity: data.main.humidity,
+        description: data.weather[0].description
+      });
+    }
+    else{
+      this.setState({
+        temperature: undefined,
+        city: undefined,
+        country: undefined,
+        humidity: undefined,
+        description: undefined,
+        error: "Please enter corrrect values."
+      });
+    }
+    
   }
 
   render(){
